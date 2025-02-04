@@ -1,0 +1,15 @@
+{
+    "id": 1,
+    "app_id": 1,
+    "installation_id": 1,
+    "version": "1.0.0",
+    "config": {
+      "sensor_types": [
+        "Vibration Sensor",
+        "Presence Sensor",
+        "Tracking/Positioning Sensor"
+      ],
+      "update_interval": 5
+    },
+    "name": "Sensor Simulation"
+  }
