@@ -1,0 +1,35 @@
+{
+    "author": "IoT Open",
+    "license": "MIT",
+    "input": {
+      "sensor_types": {
+        "required": true,
+        "name": "Select sensors",
+        "description": "Choose which sensors to simulate",
+        "type": "multi_function_selector",
+        "options": [
+          "Vibration Sensor",
+          "Multi-Sensor",
+          "Temperature Sensor",
+          "Noise Sensor",
+          "Presence Sensor",
+          "Tracking/Positioning Sensor"
+        ]
+      },
+      "update_interval": {
+        "required": true,
+        "name": "Update Interval",
+        "description": "How often (in seconds) fake data should be generated",
+        "type": "number",
+        "default": 10
+      }
+    },
+    "guide": [
+      {
+        "id": "stage_1",
+        "title": "Configuration",
+        "description": "Choose which sensors to simulate and set update interval.",
+        "input_fields": ["sensor_types", "update_interval"]
+      }
+    ]
+  }
