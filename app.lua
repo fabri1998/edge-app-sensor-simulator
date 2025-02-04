@@ -14,7 +14,7 @@ local cfg = json.decode(config_content)
 -- MQTT-settings
 local topic_prefix = "iotopen/simulated/"
 local mq = require("mq")
-local timer = require("timer")  -- FIX: Lade till timer
+local timer = require("timer")
 
 -- Function for generating fake data.
 local function generate_fake_data(sensor_type)
