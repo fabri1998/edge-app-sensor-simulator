@@ -1,35 +1,39 @@
 {
-    "author": "IoT Open",
-    "license": "MIT",
-    "input": {
+  "author": "IoT Open",
+  "licence": "MIT",
+  "input": {
       "sensor_types": {
-        "required": true,
-        "name": "Select sensors",
-        "description": "Choose which sensors to simulate",
-        "type": "multi_function_selector",
-        "options": [
-          "Vibration Sensor",
-          "Multi-Sensor",
-          "Temperature Sensor",
-          "Noise Sensor",
-          "Presence Sensor",
-          "Tracking/Positioning Sensor"
-        ]
+          "required": true,
+          "name": "Select sensors",
+          "description": "Choose which sensors to simulate",
+          "type": "multi_function_selector",
+          "filter": {
+              "type": ["fake_sensor"]
+          },
+          "options": [
+              { "value": "fake_vibration_sensor", "label": "Fake Vibration Sensor" },
+              { "value": "fake_temperature_sensor", "label": "Fake Temperature Sensor" },
+              { "value": "fake_noise_sensor", "label": "Fake Noise Sensor" },
+              { "value": "fake_presence_sensor", "label": "Fake Presence Sensor" },
+              { "value": "fake_tracking_sensor", "label": "Fake Tracking Sensor" }
+          ]
       },
       "update_interval": {
-        "required": true,
-        "name": "Update Interval",
-        "description": "How often (in seconds) fake data should be generated",
-        "type": "number",
-        "default": 10
+          "required": true,
+          "name": "Update Interval",
+          "description": "How often (in seconds) fake data should be generated",
+          "type": "number",
+          "default": 10,
+          "min": 1,
+          "max": 3600
       }
-    },
-    "guide": [
+  },
+  "guide": [
       {
-        "id": "stage_1",
-        "title": "Configuration",
-        "description": "Choose which sensors to simulate and set update interval.",
-        "input_fields": ["sensor_types", "update_interval"]
+          "id": "stage_1",
+          "title": "Configuration",
+          "description": "Choose which sensors to simulate and set update interval.",
+          "input_fields": ["sensor_types", "update_interval"]
       }
-    ]
-  }
+  ]
+}
