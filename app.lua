@@ -1,22 +1,32 @@
-local json = require("json")
-local config_file = io.open("config.json", "r")
+local json = require("cjson")
+local copas = require("copas")
+
+math.randomseed(os.time())
+
+-- Läs konfigurationsfilen
+local config_path = "/src/config.json"
+local config_file = io.open(config_path, "r")
 
 if not config_file then
-    print("Could not open config.json")
+    print("Could not open config.json at " .. config_path)
     return
 end
 
--- Reading the configuration.
 local config_content = config_file:read("*a")
 config_file:close()
-local cfg = json.decode(config_content)
 
--- MQTT-settings
-local topic_prefix = "iotopen/simulated/"
-local mq = require("mq")
-local timer = require("timer")
+local cfg, err = json.decode(config_content)
+if not cfg then
+    print("Error decoding JSON:", err)
+    return
+end
 
--- Function for generating fake data.
+if not cfg.config or not cfg.config.sensor_types or not cfg.config.update_interval then
+    print("Invalid configuration format in config.json")
+    return
+end
+
+-- Funktion för att generera fakedata
 local function generate_fake_data(sensor_type)
     if sensor_type == "Vibration Sensor" then
         return { vibration = math.random(0, 100) / 10 }
@@ -35,23 +45,26 @@ local function generate_fake_data(sensor_type)
     end
 end
 
--- Main loop: Generate and send data.
+-- Generera och skriv ut data
 local function send_fake_data()
-    for _, sensor in ipairs(cfg.config.sensor_types) do
-        local data = generate_fake_data(sensor)
-        local topic = topic_prefix .. sensor:gsub(" ", "_"):lower()
-        local payload = json.encode(data)
+    while true do
+        for _, sensor in ipairs(cfg.config.sensor_types) do
+            local data = generate_fake_data(sensor)
+            local payload = json.encode(data)
 
-        mq:pub(topic, payload)
-        print("Published to:", topic, "Data:", payload)
+            print("Generated data for", sensor, ":", payload)
+        end
+
+        -- Använd `copas.sleep()` inuti en coroutine
+        copas.sleep(cfg.config.update_interval)
     end
-
-    timer:after(cfg.config.update_interval, send_fake_data)
 end
 
+-- Starta simuleringen
 local function onStart()
     print("Starting simulated sensors...")
-    send_fake_data()
+    copas.addthread(send_fake_data)
+    copas.loop() 
 end
 
 onStart()
